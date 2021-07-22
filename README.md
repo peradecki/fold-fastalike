@@ -53,7 +53,7 @@ optional arguments:
   -h, --help       show this help message and exit
   --version        show program's version number and exit
   --output output  the output directory to use when generating outputs for
-                   each sequence. Defaultsto a date-stamped folder with the
+                   each sequence. Defaults to a date-stamped folder with the
                    prefix outputs in the same location as the command was
                    called.
   --lunp LUNP      compute unpaired run probabilities up to length LUNP
