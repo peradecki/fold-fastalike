@@ -1,12 +1,12 @@
 # fold-fastalike
 
 
-This tool reads in a fasta-like file and performs various RNA folding analyses.
+This Python tool reads in a fasta-like file and performs various RNA folding analyses.
 
 
 ## Overview
 
-This tool reads in a fasta-like file and performs various RNA folding analyses using the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) toolset.
+The tool reads in a fasta-like file and performs various RNA folding analyses using the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) toolset.
 
 Currently, it's capable of:
 * Generating minimum free energy (MFE) structures in dot-bracket format (`--MFE` flag)
@@ -14,7 +14,7 @@ Currently, it's capable of:
 * Computing overall base-pairing probability profiles (Prob(paired) / Prob(unpaired)) (`--pfold` flag)
 * Computing Shannon entropy profiles (`--pfold` flag)
 * Producing pairing probability "dot-plots" in PDF format (`--MFE` flag)
-* Computing unpaired segment probabilities (the probability of an unpaired run of length *L* at each position) (`--lunp [L]` flag)
+* Computing unpaired segment probabilities (the probability of an unpaired run of length *L* at each position) (`--lunp [LUNP]` flag)
  
 All outputs will be saved to a folder that contains a folder for each transcript in the provided fasta-like file. Within each of these folders will be the generated files.
 
