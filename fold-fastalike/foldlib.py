@@ -14,7 +14,7 @@ class FoldPipeline:
         self.output = configuration['output']
         self.pfold = configuration['pfold']
 
-        if configuration['all']:
+        if configuration['full-fold']:
             self.MEA = True
             self.MFE = True
             self.pfold = True
@@ -40,12 +40,12 @@ class FoldPipeline:
 
         # Get maximum expected accuracy (MEA) structure
         if self.MEA:
-            db = run_rnafold_MEA(output_directory, fasta)
+            db = run_rnafold_MEA(output_directory, rna_name, fasta)
             filelib.write_dot_bracket(os.path.join(output_directory, f'{rna_name}_mea.dot'), rna_name, sequence, db)
 
         # Get probabilities of unpaired segments of a given length
         if self.lunp:
-            run_rnaplfold_lunp(output_directory, rna_name, fasta, lunp=self.lunp)
+            run_rnaplfold_lunp(output_directory, rna_name, sequence, lunp=self.lunp)
 
         cleanup(output_directory, rna_name)
 
@@ -69,6 +69,7 @@ def run_rnafold(folder, name, file):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     captured_output = subprocess.run(['RNAfold', '-p', f'{file}'], capture_output=True)  # Fold and capture output
+    subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mfe_ss.ps'])  # Rename structure plot
     subprocess.run(['mv', f'{name}_dp.ps', f'{name}_dotplot.ps'])  # Rename dot-plot
     subprocess.run(['ps2pdf14', '-dEPSCrop', f'{name}_dotplot.ps'])  # Convert dot-plot to PDF
     os.chdir(main_folder)  # Return to original folder
@@ -94,11 +95,12 @@ def run_rnaplfold(folder, name, sequence):
     os.chdir(main_folder)  # Return to original folder
 
 
-def run_rnafold_MEA(folder, file):
+def run_rnafold_MEA(folder, name, file):
 
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     captured_output = subprocess.run(['RNAfold', '--MEA', f'{file}'], capture_output=True)  # Fold and capture output
+    subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mea_ss.ps'])  # Rename structure plot
     os.chdir(main_folder)  # Return to original folder
 
     db_result = re.search(r'[\\n]([.()]+)[\s]', str(captured_output.stdout))  # Parse dot-bracket from output
@@ -112,8 +114,9 @@ def run_rnaplfold_lunp(folder, name, sequence, lunp):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     # Compute full pairing probabilities with RNAplfold
+    print(bytes(sequence, 'utf-8'))
     subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-u', f'{lunp}'], input=bytes(sequence, 'utf-8'))
-    subprocess.run(['mv', 'plfold_lunp', f'{name}_unpaired_run_probs.ps'])  # Rename output file
+    subprocess.run(['mv', 'plfold_lunp', f'{name}_unpaired_run_probs.txt'])  # Rename output file
     os.chdir(main_folder)  # Return to original folder
 
 
