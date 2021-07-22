@@ -10,7 +10,7 @@ This tool reads in a fasta-like file and performs various RNA folding analyses u
 
 Currently, it's capable of:
 * Generating minimum free energy (MFE) structures in dot-bracket format (`--MFE` flag)
-* Computing base-pairing probabilities for all i, j partners (`--pfold` flag)
+* Computing base-pairing probabilities for all possible i, j partners (`--pfold` flag)
 * Computing overall base-pairing probability profiles (Prob(paired) / Prob(unpaired)) (`--pfold` flag)
 * Computing Shannon entropy profiles (`--pfold` flag)
 * Producing pairing probability "dot-plots" in PDF format (`--MFE` flag)
@@ -82,7 +82,7 @@ This will create a folder called `outputs-{%date}_{%time}` and four folders with
 * `{%name%}_mfe_ss.ps` >> MFE structure in PostScript format
 * `{%name%}_bpdists.ps` >> Pairing probabilities (Prob(i, j)) in PostScript format
 * `{%name%}_bpdists.txt` >> Pairing probabilities (Prob(i, j)) in text format
-* `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired))
+* `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired)) and entropy profiles
 * `{%name%}_mea.dot` >> MEA structure in dot-bracket format
 * `{%name%}_mea_ss.ps` >> MEA structure in PostScript format
 
@@ -97,7 +97,7 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 * `{%name%}.fasta` >> Single-transcript fasta file
 * `{%name%}_dotplot.pdf` >> Dot-plot in PDF format
-* `{%name%}_dotplot.ps` >> Dot-plot is PostScript format
+* `{%name%}_dotplot.ps` >> Dot-plot in PostScript format
 * `{%name%}_mfe.dot` >> MFE structure in dot-bracket format
 * `{%name%}_mfe_ss.ps` >> MFE structure in PostScript format
 
@@ -113,14 +113,14 @@ Outputs will be produced with the same folder structure as before, and each fold
 * `{%name%}.fasta` >> Single-transcript fasta file
 * `{%name%}_bpdists.ps` >> Pairing probabilities (Prob(i, j)) in PostScript format
 * `{%name%}_bpdists.txt` >> Pairing probabilities (Prob(i, j)) in text format
-* `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired))
+* `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired)) and entropy profiles
 
 
 ### Compute MEA structures
 
 To compute MFE structures and a PDF dot-plot for each transcript in the provided sample data, run
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --MFE`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --MEA`.
 
 This will create a folder called `outputs-{%date}_{%time}` and four folders within this folder, one for each transcript in the used file. Each folder will have:
 
@@ -150,3 +150,5 @@ Outputs will be produced with the same folder structure as before, and each fold
 * The program will, by default, create a new output folder each time that it's called. To instead save outputs to a predefined location, use the `--output [output]` flag to specify an output directory.
 
 * The `--full-fold` flag will not activate the `--lunp` option, as the latter requires the specification of a maximum unpaired run length. The `--lunp` flag can be activate manually in tandem to `--full-fold`.
+
+* Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert the raw probabilities when necessary.
