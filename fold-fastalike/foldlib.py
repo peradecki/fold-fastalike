@@ -3,7 +3,7 @@ import re
 import subprocess
 from . import filelib
 from . import postscript2bpdists
-from . import bpdist2overall
+from . import bpdists2overall
 
 
 class FoldPipeline:
@@ -91,7 +91,7 @@ def run_rnaplfold(folder, name, sequence):
     subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0'], input=bytes(sequence, 'utf-8'))
     subprocess.run(['mv', 'plfold_dp.ps', f'{name}_bpdists.ps'])  # Rename output file
     postscript2bpdists.postscript2bpdists(f'{name}_bpdists.ps', f'{name}_bpdists.txt')  # Parse outputs
-    bpdist2overall.bpdist2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
+    bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
     os.chdir(main_folder)  # Return to original folder
 
 

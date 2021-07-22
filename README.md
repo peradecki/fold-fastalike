@@ -151,4 +151,8 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 * The `--full-fold` flag will not activate the `--lunp` option, as the latter requires the specification of a maximum unpaired run length. The `--lunp` flag can be activate manually in tandem to `--full-fold`.
 
-* Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert the raw probabilities when necessary.
+* Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert to the raw probabilities by squaring when necessary.
+
+* The routines used to post-process some ViennaRNA outputs are also available within the module as standalone scripts.
+    * `python -m fold-fastalike.postscript2bpdists [PS_FILE] [TXT_FILE]`
+    * `python -m fold-fastalike.bpdist2overall [`

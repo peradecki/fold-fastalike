@@ -73,4 +73,3 @@ def create_unique_names(names):
             names[i] += '_' + str(count)
 
     return names
-

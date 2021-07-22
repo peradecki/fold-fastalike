@@ -3,7 +3,7 @@ import sys
 import numpy as np
 
 
-def bpdist2overall(fp_in, fp_out):
+def bpdists2overall(fp_in, fp_out):
 
     with open(fp_in, 'r') as f:
         lines = f.readlines()  # Parse header
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         if len(sys.argv) > 3:
             raise Exception('Too many input arguments provided.')
 
-    bpdist2overall(f_in, f_out)
+    bpdists2overall(f_in, f_out)
