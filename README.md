@@ -154,5 +154,5 @@ Outputs will be produced with the same folder structure as before, and each fold
 * Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert to the raw probabilities by squaring when necessary.
 
 * The routines used to post-process some ViennaRNA outputs are also available within the module as standalone scripts.
-    * `python -m fold-fastalike.postscript2bpdists [PS_FILE] [TXT_FILE]`
-    * `python -m fold-fastalike.bpdist2overall [`
+    * `python -m fold-fastalike.postscript2bpdists [PS_FILE_IN] [TXT_FILE_OUT]`
+    * `python -m fold-fastalike.bpdists2overall [TXT_FILE_IN] [TXT_FILE_OUT]`
