@@ -91,7 +91,7 @@ This will create a folder called `outputs-{%date%}_{%time%}` and four folders wi
 
 To compute MFE structures and a PDF dot-plot for each transcript in the provided sample data, run
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --MFE`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --MFE`
 
 Outputs will be produced with the same folder structure as before, and each folder will have:
 
@@ -106,7 +106,7 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 To compute base-pairing probabilities for the provided sample data, run
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --pfold`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --pfold`
 
 Outputs will be produced with the same folder structure as before, and each folder will have:
 
@@ -120,7 +120,7 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 To compute MEA structures and a PDF dot-plot for each transcript in the provided sample data, run
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --MEA`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --MEA`
 
 This will create a folder called `outputs-{%date}_{%time}` and four folders within this folder, one for each transcript in the used file. Each folder will have:
 
@@ -133,7 +133,7 @@ This will create a folder called `outputs-{%date}_{%time}` and four folders with
 
 To compute the probabilities of unpaired runs up to a certain length across the provided transcripts, run
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --lunp [LUNP]`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --lunp [LUNP]`
 
 For instance, to compute probabilities up to a length of 10 nt, we would run:
 
