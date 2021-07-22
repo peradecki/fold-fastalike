@@ -11,7 +11,7 @@ parser.add_argument("--version",
                     action="version",
                     version="1.0")
 parser.add_argument("input", type=str, metavar="input",
-                    help="The input fasta-like file to process.")
+                    help="the input fasta-like file to process.")
 parser.add_argument("--output", type=str, metavar="output",
                     default="-1",
                     help="the output directory to use when generating outputs for each sequence. Defaults "

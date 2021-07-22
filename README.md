@@ -47,7 +47,7 @@ usage: fold-fastalike [-h] [--version] [--output output] [--lunp LUNP] [--MFE]
 Fold and process information for a batch of sequences in a fasta-like file.
 
 positional arguments:
-  input            The input fasta-like file to process.
+  input            the input fasta-like file to process.
 
 optional arguments:
   -h, --help       show this help message and exit
