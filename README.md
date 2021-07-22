@@ -118,7 +118,7 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 ### Compute MEA structures
 
-To compute MFE structures and a PDF dot-plot for each transcript in the provided sample data, run
+To compute MEA structures and a PDF dot-plot for each transcript in the provided sample data, run
 
 `python -m fold-fastalike sample_data/test_sequences.fasta --MEA`.
 
