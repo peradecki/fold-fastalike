@@ -47,7 +47,7 @@ class FoldPipeline:
         if self.lunp:
             run_rnaplfold_lunp(output_directory, rna_name, fasta, lunp=self.lunp)
 
-        cleanup(output_directory)
+        cleanup(output_directory, rna_name)
 
         return
 
@@ -117,7 +117,7 @@ def run_rnaplfold_lunp(folder, name, sequence, lunp):
     os.chdir(main_folder)  # Return to original folder
 
 
-def cleanup(folder):
+def cleanup(folder, name):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder and delete extraneous files
     if os.path.exists('rna_ss.ps'):
@@ -126,4 +126,6 @@ def cleanup(folder):
         os.remove('rna_dotplot.ps')
     if os.path.exists('plfold_dp.ps'):
         os.remove('plfold_dp.ps')
+    if os.path.exists(f'{name}_dp.ps'):
+        os.remove(f'{name}_dp.ps')
     os.chdir(main_folder)
