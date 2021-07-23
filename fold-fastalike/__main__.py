@@ -16,7 +16,7 @@ parser.add_argument("--output", type=str, metavar="output",
                     default="-1",
                     help="the output directory to use when generating outputs for each sequence. Defaults "
                          "to a date-stamped folder with the prefix ""outputs"" in the same location as"
-                         " the command was called.")
+                         " the command was called")
 parser.add_argument("--lunp", type=int, default=0,
                     help="compute unpaired run probabilities up to length LUNP")
 parser.add_argument("--MFE", action="store_true",

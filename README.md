@@ -71,7 +71,7 @@ The simplest use of the module is via the `--full-fold` flag. This activates the
 
 For example: 
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --full-fold`.
+`python -m fold-fastalike sample_data/test_sequences.fasta --full-fold`
 
 This will create a folder called `outputs-{%date%}_{%time%}` and four folders within this folder, one for each transcript in the used file. Each folder will have:
 
