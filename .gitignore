@@ -1,5 +1,6 @@
 venv/
 outputs*/
+data/
 *__pycache__*
 .idea
 .DS_store

@@ -26,7 +26,7 @@ It does not currently support the incorporation of structure profiling data (rea
 No automated installation routines are currently configured, but it's recommended to add the folder containing the `fold-fastalike` module to your `$PYTHONPATH` so that the tool can be called from anywhere. If you don't add the module to your path, you'll only be able to call the module when your current working directory is this repository.
 
 The tool has a set of required dependecies in order to properly function:
-* Python 3 with `numpy` installed
+* Python 3 with `numpy` and `tqdm` installed
 * [ViennaRNA](https://www.tbi.univie.ac.at/RNA/documentation.html) command line tools (`RNAfold`, `RNAplfold`, etc.)
 * [`ps2pdf14`](https://manpages.debian.org/stretch/ghostscript/ps2pdf14.1.en.html) (comes preinstalled on some systems, otherwise most easily installed as a part of [Ghostscript](https://www.ghostscript.com) with [HomeBrew](https://formulae.brew.sh/formula/ghostscript))
 

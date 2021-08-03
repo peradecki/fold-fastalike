@@ -21,7 +21,7 @@ class FoldPipeline:
 
     def process_sequence(self, rna_name, sequence):
 
-        print(f'Processing RNA: {rna_name}')
+        # print(f'Processing RNA: {rna_name}')
         output_directory = os.path.join(self.output, rna_name)
 
         self.make_output_directory(rna_name)

@@ -1,6 +1,7 @@
 import sys
 import argparse
 import multiprocessing
+from tqdm import tqdm
 from . import filelib
 from . import foldlib
 
@@ -53,9 +54,10 @@ if __name__ == "__main__":
 
     P = multiprocessing.Pool(processes=tasks, maxtasksperchild=1000)
 
-    for q in P.imap_unordered(FoldPipeline.process_sequence_wrapper,
-                              ({'rna_name': seq['name'], 'sequence': seq['sequence']} for seq in seqs)):
-        pass
+    with tqdm(total=len(seqs), leave=True, unit='transcript', desc='  Progress') as pbar:
+        for result in P.imap_unordered(FoldPipeline.process_sequence_wrapper,
+                                       ({'rna_name': seq['name'], 'sequence': seq['sequence']} for seq in seqs)):
+            pbar.update()
 
     P.close()
     P.join()
