@@ -75,6 +75,8 @@ def run_rnafold(folder, name, file):
     subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mfe_ss.ps'])  # Rename structure plot
     subprocess.run(['mv', f'{name}_dp.ps', f'{name}_dotplot.ps'])  # Rename dot-plot
     subprocess.run(['ps2pdf14', '-dEPSCrop', f'{name}_dotplot.ps'])  # Convert dot-plot to PDF
+    postscript2bpdists.postscript2bpdists(f'{name}_dotplot.ps', f'{name}_bpdists.txt')  # Parse outputs
+    bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
     os.chdir(main_folder)  # Return to original folder
 
     db_result = re.search(r'[\\n]([.()]+)[\s]', str(captured_output.stdout))  # Parse dot-bracket from output
@@ -87,15 +89,17 @@ def run_rnafold(folder, name, file):
 
 def run_rnaplfold(folder, name, sequence):
 
-    rna_length = len(sequence)
-    main_folder = os.getcwd()
-    os.chdir(folder)  # Enter relevant folder
-    # Compute full pairing probabilities with RNAplfold
-    subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0001', '−−pfScale', '2'], input=bytes(sequence, 'utf-8'))
-    subprocess.run(['mv', 'plfold_dp.ps', f'{name}_bpdists.ps'])  # Rename output file
-    postscript2bpdists.postscript2bpdists(f'{name}_bpdists.ps', f'{name}_bpdists.txt')  # Parse outputs
-    bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
-    os.chdir(main_folder)  # Return to original folder
+    pass
+
+    # rna_length = len(sequence)
+    # main_folder = os.getcwd()
+    # os.chdir(folder)  # Enter relevant folder
+    # # Compute full pairing probabilities with RNAplfold
+    # subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0001', '−−pfScale', '2'], input=bytes(sequence, 'utf-8'))
+    # subprocess.run(['mv', 'plfold_dp.ps', f'{name}_bpdists.ps'])  # Rename output file
+    # postscript2bpdists.postscript2bpdists(f'{name}_bpdists.ps', f'{name}_bpdists.txt')  # Parse outputs
+    # bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
+    # os.chdir(main_folder)  # Return to original folder
 
 
 def run_rnafold_MEA(folder, name, file):
