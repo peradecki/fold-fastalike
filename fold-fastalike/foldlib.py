@@ -91,7 +91,7 @@ def run_rnaplfold(folder, name, sequence):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     # Compute full pairing probabilities with RNAplfold
-    subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0001', '−−pfScale', '1.2'], input=bytes(sequence, 'utf-8'))
+    subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0001', '−−pfScale', '2'], input=bytes(sequence, 'utf-8'))
     subprocess.run(['mv', 'plfold_dp.ps', f'{name}_bpdists.ps'])  # Rename output file
     postscript2bpdists.postscript2bpdists(f'{name}_bpdists.ps', f'{name}_bpdists.txt')  # Parse outputs
     bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
