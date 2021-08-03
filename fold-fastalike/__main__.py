@@ -1,5 +1,6 @@
 import sys
 import argparse
+import multiprocessing
 from . import filelib
 from . import foldlib
 
@@ -27,6 +28,8 @@ parser.add_argument("--pfold", action="store_true",
                     help="compute all base-pairing probabilities and Shannon entropies")
 parser.add_argument("--full-fold", action="store_true",
                     help="activates --MFE, --MEA, and --pfold")
+parser.add_argument("--tasks", type=int, default=0,
+                    help="Number of parallel tasks to use. Default is to use all available.")
 
 
 if __name__ == "__main__":
@@ -43,7 +46,21 @@ if __name__ == "__main__":
                                                        'pfold': args.pfold,
                                                        'full-fold': args.full_fold})
 
-    for seq in seqs:
-        FoldPipeline.process_sequence(seq['name'], seq['sequence'])
+    if args.tasks == 0:
+        tasks = multiprocessing.cpu_count()
+    else:
+        tasks = args.tasks
+
+    P = multiprocessing.Pool(processes=tasks, maxtasksperchild=1000)
+
+    for q in P.imap_unordered(FoldPipeline.process_sequence_wrapper,
+                              ({'rna_name': seq['name'], 'sequence': seq['sequence']} for seq in seqs)):
+        pass
+
+    P.close()
+    P.join()
+
+    # for seq in seqs:
+    #     FoldPipeline.process_sequence(seq['name'], seq['sequence'])
 
     print("... done.")

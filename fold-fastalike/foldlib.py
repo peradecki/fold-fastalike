@@ -51,6 +51,9 @@ class FoldPipeline:
 
         return
 
+    def process_sequence_wrapper(self, rna):
+        return self.process_sequence(rna['rna_name'], rna['sequence'])
+
     def make_output_directory(self, rna_name):
         output_directory = os.path.join(self.output, rna_name)
         filelib.make_dir(output_directory)
