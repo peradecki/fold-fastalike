@@ -72,7 +72,7 @@ def run_rnafold(folder, name, file):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     captured_output = subprocess.run(['RNAfold', '-p', f'{file}'], capture_output=True)  # Fold and capture output
-    subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mfe_ss.ps'])  # Rename structure plot
+    # subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mfe_ss.ps'])  # Rename structure plot
     subprocess.run(['mv', f'{name}_dp.ps', f'{name}_dotplot.ps'])  # Rename dot-plot
     subprocess.run(['ps2pdf14', '-dEPSCrop', f'{name}_dotplot.ps'])  # Convert dot-plot to PDF
     postscript2bpdists.postscript2bpdists(f'{name}_dotplot.ps', f'{name}_bpdists.txt')  # Parse outputs
