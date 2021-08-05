@@ -14,6 +14,8 @@ def bpdists2overall(fp_in, fp_out):
         for line in lines[2:]:
             if line.__contains__('lbox'):
                 continue
+            if not line.strip():
+                continue
             row = line.strip().split()
             i = int(row[0])-1
             j = int(row[1])-1

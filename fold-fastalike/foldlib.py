@@ -76,7 +76,7 @@ def run_rnafold(folder, name, file):
 
     db_result = re.search(r'[\\n]([.()]+)[\s]', str(captured_output.stdout))  # Parse dot-bracket from output
     db = db_result.group(1)
-    mfe_result = re.search(r'\((\s?-?\d*\.?\d+)\)', str(captured_output.stdout))  # Parse MFE from output
+    mfe_result = re.search(r'\((\s?\s?-?\d*\.?\d+)\)', str(captured_output.stdout))  # Parse MFE from output
     mfe = mfe_result.group(1)
 
     return db, mfe

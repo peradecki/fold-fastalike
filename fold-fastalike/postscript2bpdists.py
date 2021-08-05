@@ -11,8 +11,8 @@ def postscript2bpdists(fp_ps_in, fp_txt_out):
     seq_result = re.search(r'/sequence { \(\\[\n\r]([\S\n ]+)[\n\r]\) } def', ps_input)
     seq = seq_result.group(1).replace('\\', '').replace('\n', '')
 
-    bpdists_result = re.search(r'%start of base pair probability data[\n\r]([\S\n ]+)[\n\r]showpage', ps_input)
-    bpdists = bpdists_result.group(1)
+    bpdists_result = re.search(r'%start of base pair probability data([\S\n ]+)showpage', ps_input)
+    bpdists = bpdists_result.group(1).strip()
 
     with open(fp_txt_out, 'w') as f:
         f.write('{}\n'.format(len(seq)))
