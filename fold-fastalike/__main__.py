@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(prog="fold-fastalike",
                                  epilog="")
 parser.add_argument("--version",
                     action="version",
-                    version="1.0")
+                    version="1.1")
 parser.add_argument("input", type=str, metavar="input",
                     help="the input fasta-like file to process.")
 parser.add_argument("--output", type=str, metavar="output",

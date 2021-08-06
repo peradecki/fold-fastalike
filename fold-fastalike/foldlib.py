@@ -21,7 +21,6 @@ class FoldPipeline:
 
     def process_sequence(self, rna_name, sequence):
 
-        # print(f'Processing RNA: {rna_name}')
         output_directory = os.path.join(self.output, rna_name)
 
         self.make_output_directory(rna_name)
@@ -33,14 +32,9 @@ class FoldPipeline:
             filelib.write_dot_bracket(os.path.join(output_directory, f'{rna_name}_mfe.dot'),
                                       rna_name + ' (MFE={})'.format(mfe), sequence, db)
 
-        # Run RNApfold to get all i, j pairing probabilities, then manually compute overall pairing probabilities
-        # and Shannon entropy
-        if self.pfold:
-            run_rnaplfold(output_directory, rna_name, sequence)
-
         # Get maximum expected accuracy (MEA) structure
         if self.MEA:
-            db = run_rnafold_MEA(output_directory, rna_name, fasta)
+            db = run_rnafold_MEA(output_directory, fasta)
             filelib.write_dot_bracket(os.path.join(output_directory, f'{rna_name}_mea.dot'), rna_name, sequence, db)
 
         # Get probabilities of unpaired segments of a given length
@@ -71,8 +65,8 @@ def run_rnafold(folder, name, file):
 
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
-    captured_output = subprocess.run(['RNAfold', '-p', f'{file}'], capture_output=True)  # Fold and capture output
-    # subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mfe_ss.ps'])  # Rename structure plot
+    # Fold and capture output
+    captured_output = subprocess.run(['RNAfold', '-p', '--noPS', f'{file}'], capture_output=True)
     subprocess.run(['mv', f'{name}_dp.ps', f'{name}_dotplot.ps'])  # Rename dot-plot
     subprocess.run(['ps2pdf14', '-dEPSCrop', f'{name}_dotplot.ps'])  # Convert dot-plot to PDF
     postscript2bpdists.postscript2bpdists(f'{name}_dotplot.ps', f'{name}_bpdists.txt')  # Parse outputs
@@ -87,27 +81,12 @@ def run_rnafold(folder, name, file):
     return db, mfe
 
 
-def run_rnaplfold(folder, name, sequence):
-
-    pass
-
-    # rna_length = len(sequence)
-    # main_folder = os.getcwd()
-    # os.chdir(folder)  # Enter relevant folder
-    # # Compute full pairing probabilities with RNAplfold
-    # subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-c', '0.0001', '−−pfScale', '2'], input=bytes(sequence, 'utf-8'))
-    # subprocess.run(['mv', 'plfold_dp.ps', f'{name}_bpdists.ps'])  # Rename output file
-    # postscript2bpdists.postscript2bpdists(f'{name}_bpdists.ps', f'{name}_bpdists.txt')  # Parse outputs
-    # bpdists2overall.bpdists2overall(f'{name}_bpdists.txt', f'{name}_profiles.txt')  # Compute P(paired) and entropy
-    # os.chdir(main_folder)  # Return to original folder
-
-
-def run_rnafold_MEA(folder, name, file):
+def run_rnafold_MEA(folder, file):
 
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
-    captured_output = subprocess.run(['RNAfold', '--MEA', f'{file}'], capture_output=True)  # Fold and capture output
-    subprocess.run(['mv', f'{name}_ss.ps', f'{name}_mea_ss.ps'])  # Rename structure plot
+    # Fold and capture output
+    captured_output = subprocess.run(['RNAfold', '--MEA', '--noPS', f'{file}'], capture_output=True)
     os.chdir(main_folder)  # Return to original folder
 
     db_result = re.search(r'[\\n]([.()]+)[\s]', str(captured_output.stdout))  # Parse dot-bracket from output
@@ -121,7 +100,6 @@ def run_rnaplfold_lunp(folder, name, sequence, lunp):
     main_folder = os.getcwd()
     os.chdir(folder)  # Enter relevant folder
     # Compute full pairing probabilities with RNAplfold
-    print(bytes(sequence, 'utf-8'))
     subprocess.run(['RNAplfold', '-W', f'{rna_length}', '-u', f'{lunp}'], input=bytes(sequence, 'utf-8'))
     subprocess.run(['mv', 'plfold_lunp', f'{name}_unpaired_run_probs.txt'])  # Rename output file
     os.chdir(main_folder)  # Return to original folder

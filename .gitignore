@@ -5,3 +5,4 @@ data/
 .idea
 .DS_store
 *.pyc
+tests/test_output/
