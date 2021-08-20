@@ -34,8 +34,8 @@ def tests():
                     '--lunp', '0'])
 
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
-                    '--output', 'tests/test_output/lunp0',
-                    '--lunp', '0'])
+                    '--output', 'tests/test_output/MEA',
+                    '--MEA'])
 
 
 def run_tests():
