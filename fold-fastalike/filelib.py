@@ -15,6 +15,10 @@ def parse_fastalike(fp_fasta):
             sequence_name = line.split('>')[1].strip()  # RNA name
             sequence = f.readline().strip()  # Nucleotide sequence
 
+            if not sequence:
+                print(f"Warning: empty transcript \"f{sequence_name}\"")
+                continue
+
             seqs.append({'name': sequence_name,
                          'sequence': sequence})
 

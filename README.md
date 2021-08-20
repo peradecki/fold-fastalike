@@ -1,7 +1,7 @@
 # fold-fastalike
 
 
-This Python tool reads in a fasta-like file and performs various RNA folding analyses.
+This parallelized Python tool reads in a fasta-like file and performs various RNA folding analyses.
 
 
 ## Overview
@@ -9,11 +9,12 @@ This Python tool reads in a fasta-like file and performs various RNA folding ana
 The tool reads in a fasta-like file and performs various RNA folding analyses using the [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) toolset.
 
 Currently, it's capable of:
-* Generating minimum free energy (MFE) structures in dot-bracket format (`--MFE` flag)
-* Computing base-pairing probabilities for all possible i, j partners (`--pfold` flag)
-* Computing overall base-pairing probability profiles (Prob(paired) / Prob(unpaired)) (`--pfold` flag)
-* Computing Shannon entropy profiles (`--pfold` flag)
-* Producing pairing probability "dot-plots" in PDF format (`--MFE` flag)
+* Generating minimum free energy (MFE) structures in dot-bracket format (`--fold` flag)
+* Computing base-pairing probabilities for all possible i, j partners (`--fold` flag)
+* Computing overall base-pairing probability profiles (Prob(paired) / Prob(unpaired)) (`--fold` flag)
+* Computing Shannon entropy profiles (`--fold` flag)
+* Producing pairing probability "dot-plots" in PDF format (`--fold` flag)
+* Generating maximum expected accuracy (MEA) structures in dot-bracket format (`--MEA` flag)
 * Computing unpaired segment probabilities (the probability of an unpaired run of length *L* at each position) (`--lunp [LUNP]` flag)
  
 All outputs will be saved to a folder that contains a folder for each transcript in the provided fasta-like file. Within each of these folders will be the generated files.
@@ -40,8 +41,8 @@ Run `python -m fold-fastalike --version` to check that your Python interpreter i
 Run `python -m fold-fastalike -h` to see available options.
 
 ```
-usage: fold-fastalike [-h] [--version] [--output output] [--lunp LUNP] [--MFE]
-                      [--MEA] [--pfold] [--full-fold]
+usage: fold-fastalike [-h] [--version] [--output output] [--lunp LUNP] [--MEA]
+                      [--fold] [--tasks TASKS]
                       input
 
 Fold and process information for a batch of sequences in a fasta-like file.
@@ -55,23 +56,21 @@ optional arguments:
   --output output  the output directory to use when generating outputs for
                    each sequence. Defaults to a date-stamped folder with the
                    prefix outputs in the same location as the command was
-                   called.
+                   called
   --lunp LUNP      compute unpaired run probabilities up to length LUNP
-  --MFE            compute Minimum Free Energy (MEA) structures
   --MEA            compute Maximum Expected Accuracy (MEA) structures
-  --pfold          compute all base-pairing probabilities and Shannon
-                   entropies
-  --full-fold      activates --MFE, --MEA, and --pfold
-
-  ```
+  --fold           compute MFE structure and partition function.
+  --tasks TASKS    Number of parallel tasks to use. Default is to use all
+                   available.
+```
 
 ## Examples
 
-The simplest use of the module is via the `--full-fold` flag. This activates the MFE, MEA, and base pair probability routines.
+The simplest use of the module is via the `--fold` flag. This activates the MFE and base pair probability routines.
 
 For example: 
 
-`python -m fold-fastalike sample_data/test_sequences.fasta --full-fold`
+`python -m fold-fastalike sample_data/test_sequences.fasta --fold`
 
 This will create a folder called `outputs-{%date%}_{%time%}` and four folders within this folder, one for each transcript in the used file. Each folder will have:
 
@@ -79,54 +78,20 @@ This will create a folder called `outputs-{%date%}_{%time%}` and four folders wi
 * `{%name%}_dotplot.pdf` >> Dot-plot in PDF format
 * `{%name%}_dotplot.ps` >> Dot-plot is PostScript format
 * `{%name%}_mfe.dot` >> MFE structure in dot-bracket format
-* `{%name%}_mfe_ss.ps` >> MFE structure in PostScript format
-* `{%name%}_bpdists.ps` >> Pairing probabilities (Prob(i, j)) in PostScript format
-* `{%name%}_bpdists.txt` >> Pairing probabilities (Prob(i, j)) in text format
-* `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired)) and entropy profiles
-* `{%name%}_mea.dot` >> MEA structure in dot-bracket format
-* `{%name%}_mea_ss.ps` >> MEA structure in PostScript format
-
-
-### Compute MFE structures
-
-To compute MFE structures and a PDF dot-plot for each transcript in the provided sample data, run
-
-`python -m fold-fastalike sample_data/test_sequences.fasta --MFE`
-
-Outputs will be produced with the same folder structure as before, and each folder will have:
-
-* `{%name%}.fasta` >> Single-transcript fasta file
-* `{%name%}_dotplot.pdf` >> Dot-plot in PDF format
-* `{%name%}_dotplot.ps` >> Dot-plot in PostScript format
-* `{%name%}_mfe.dot` >> MFE structure in dot-bracket format
-* `{%name%}_mfe_ss.ps` >> MFE structure in PostScript format
-
-
-### Compute base-pairing probabilities
-
-To compute base-pairing probabilities for the provided sample data, run
-
-`python -m fold-fastalike sample_data/test_sequences.fasta --pfold`
-
-Outputs will be produced with the same folder structure as before, and each folder will have:
-
-* `{%name%}.fasta` >> Single-transcript fasta file
-* `{%name%}_bpdists.ps` >> Pairing probabilities (Prob(i, j)) in PostScript format
 * `{%name%}_bpdists.txt` >> Pairing probabilities (Prob(i, j)) in text format
 * `{%name%}_profiles.txt` >> Overall pairing probabilities (P(paired)) and entropy profiles
 
 
 ### Compute MEA structures
 
-To compute MEA structures and a PDF dot-plot for each transcript in the provided sample data, run
+To compute MFE structures and a PDF dot-plot for each transcript in the provided sample data, run
 
 `python -m fold-fastalike sample_data/test_sequences.fasta --MEA`
 
-This will create a folder called `outputs-{%date}_{%time}` and four folders within this folder, one for each transcript in the used file. Each folder will have:
+Outputs will be produced with the same folder structure as before, and each folder will have:
 
 * `{%name%}.fasta` >> Single-transcript fasta file
-* `{%name%}_mea.dot` >> MEA structure in dot-bracket format
-* `{%name%}_mea_ss.ps` >> MEA structure in PostScript format
+* `{%name%}_mea.dot` >> MFE structure in dot-bracket format
 
 
 ### Compute unpaired run probabilities
@@ -148,8 +113,6 @@ Outputs will be produced with the same folder structure as before, and each fold
 ### Notes
 
 * The program will, by default, create a new output folder each time that it's called. To instead save outputs to a predefined location, use the `--output [output]` flag to specify an output directory.
-
-* The `--full-fold` flag will not activate the `--lunp` option, as the latter requires the specification of a maximum unpaired run length. The `--lunp` flag can be activate manually in tandem to `--full-fold`.
 
 * Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert to the raw probabilities by squaring when necessary.
 

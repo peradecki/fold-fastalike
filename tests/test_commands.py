@@ -19,7 +19,7 @@ def tests():
     time.sleep(1)
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
                     '--output', 'tests/test_output/ff/',
-                    '--full-fold'])
+                    '--fold'])
 
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
                     '--output', 'tests/test_output/lunp1/',
@@ -28,6 +28,10 @@ def tests():
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
                     '--output', 'tests/test_output/lunp10',
                     '--lunp', '10'])
+
+    subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
+                    '--output', 'tests/test_output/lunp0',
+                    '--lunp', '0'])
 
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
                     '--output', 'tests/test_output/lunp0',

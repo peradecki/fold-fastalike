@@ -21,17 +21,12 @@ parser.add_argument("--output", type=str, metavar="output",
                          " the command was called")
 parser.add_argument("--lunp", type=int, default=0,
                     help="compute unpaired run probabilities up to length LUNP")
-parser.add_argument("--MFE", action="store_true",
-                    help="compute Minimum Free Energy (MEA) structures")
 parser.add_argument("--MEA", action="store_true",
                     help="compute Maximum Expected Accuracy (MEA) structures")
-parser.add_argument("--pfold", action="store_true",
-                    help="compute all base-pairing probabilities and Shannon entropies")
-parser.add_argument("--full-fold", action="store_true",
-                    help="activates --MFE, --MEA, and --pfold")
+parser.add_argument("--fold", action="store_true",
+                    help="compute MFE structure and partition function.")
 parser.add_argument("--tasks", type=int, default=0,
                     help="Number of parallel tasks to use. Default is to use all available.")
-
 
 if __name__ == "__main__":
 
@@ -43,24 +38,29 @@ if __name__ == "__main__":
     FoldPipeline = foldlib.FoldPipeline(configuration={'output': output,
                                                        'lunp': args.lunp,
                                                        'MEA': args.MEA,
-                                                       'MFE': args.MFE,
-                                                       'pfold': args.pfold,
-                                                       'full-fold': args.full_fold})
+                                                       'fold': args.fold})
 
     if args.tasks == 0:
         tasks = multiprocessing.cpu_count()
     else:
         tasks = args.tasks
 
-    P = multiprocessing.Pool(processes=tasks, maxtasksperchild=1000)
+    print(f'Using {tasks} threads.')
+
+    P = multiprocessing.get_context('spawn').Pool(processes=tasks, maxtasksperchild=1000)
 
     with tqdm(total=len(seqs), leave=True, unit='transcript', desc='  Progress') as pbar:
-        for result in P.imap_unordered(FoldPipeline.process_sequence_wrapper,
-                                       ({'rna_name': seq['name'], 'sequence': seq['sequence']} for seq in seqs)):
-            pbar.update()
+        try:
+            for result in P.imap_unordered(FoldPipeline.process_sequence_wrapper,
+                                           ({'rna_name': seq['name'], 'sequence': seq['sequence']} for seq in seqs)):
+                pbar.update()
 
-    P.close()
-    P.join()
+            P.close()
+            P.join()
+
+        except Exception:
+            P.terminate()
+            raise
 
     # for seq in seqs:
     #     FoldPipeline.process_sequence(seq['name'], seq['sequence'])

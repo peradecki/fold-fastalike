@@ -10,14 +10,8 @@ class FoldPipeline:
     def __init__(self, configuration):
         self.lunp = configuration['lunp']
         self.MEA = configuration['MEA']
-        self.MFE = configuration['MFE']
+        self.fold = configuration['fold']
         self.output = configuration['output']
-        self.pfold = configuration['pfold']
-
-        if configuration['full-fold']:
-            self.MEA = True
-            self.MFE = True
-            self.pfold = True
 
     def process_sequence(self, rna_name, sequence):
 
@@ -27,7 +21,7 @@ class FoldPipeline:
         fasta = self.make_fasta(rna_name, sequence)
 
         # Run RNAfold to get MFE structure
-        if self.MFE:
+        if self.fold:
             db, mfe = run_rnafold(output_directory, rna_name, fasta)
             filelib.write_dot_bracket(os.path.join(output_directory, f'{rna_name}_mfe.dot'),
                                       rna_name + ' (MFE={})'.format(mfe), sequence, db)
