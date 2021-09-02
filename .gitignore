@@ -6,3 +6,6 @@ data/
 .DS_store
 *.pyc
 tests/test_output/
+.pytest*
+.coverage
+.coverage*

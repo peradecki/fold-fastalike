@@ -2,19 +2,22 @@ import os.path
 import shutil
 import subprocess
 import time
+import pathlib
 
 
-def clear_output():
-    if os.path.isdir('tests/test_output/'):
-        shutil.rmtree('tests/test_output/')
+# Handle paths and prepare output
+test_folder = pathlib.Path(__file__).parent.resolve()
+output_folder = os.path.join(test_folder, 'test_outputs')
+if os.path.isdir(output_folder):
+    shutil.rmtree(output_folder)
 
 
-def version():
+def test_version():
     print('fold-fastalike version: ')
     subprocess.run(['python', '-m', 'fold-fastalike', '--version'])
 
 
-def tests():
+def test_commands():
     print('Running test commands ... ')
     time.sleep(1)
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
@@ -36,9 +39,3 @@ def tests():
     subprocess.run(['python', '-m', 'fold-fastalike', 'tests/test_sequences.fasta',
                     '--output', 'tests/test_output/MEA',
                     '--MEA'])
-
-
-def run_tests():
-    clear_output()
-    version()
-    tests()
