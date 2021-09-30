@@ -114,7 +114,7 @@ Outputs will be produced with the same folder structure as before, and each fold
 
 * The program will, by default, create a new output folder each time that it's called. To instead save outputs to a predefined location, use the `--output [output]` flag to specify an output directory.
 
-* Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value in order to retain more effecient encoding of values near to zero. Note the headers of the relevant files and be sure to convert to the raw probabilities by squaring when necessary.
+* Base pairing probabilities of the form Prob(i,j) are typically encoded as the square-root of the actual value. Note the headers of the relevant files and be sure to convert to the raw probabilities by squaring when necessary.
 
 * The routines used to post-process some ViennaRNA outputs are also available within the module as standalone scripts.
     * `python -m fold-fastalike.postscript2bpdists [PS_FILE_IN] [TXT_FILE_OUT]`
